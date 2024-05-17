@@ -112,7 +112,8 @@ if st.session_state['submited']:
     placeholder.dataframe(data, use_container_width=True)
     right_panel.divider()
     btn_cancel = right_panel.button('Cancel',use_container_width=True,on_click=cancel_button)
-    btn_predict = right_panel.button('Predict',use_container_width=True,on_click=predict_button,disabled=st.session_state.get("predicted", True))
+    btn_predict = right_panel.button('Predict',use_container_width=True)
+    #,on_click=predict_button,disabled=st.session_state.get("predicted", True)
     if btn_predict:
         data = {'Age':age,"Income":income,"Family":family,'Experience':experience,'Mortgage':house,'CCAvg':ccavg,'CreditCard':ccd,'CD Account':cda,'Securities Account':security,'Online':online,'Education':education}
         data = pd.DataFrame(data,index=[1])
