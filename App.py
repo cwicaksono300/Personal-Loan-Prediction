@@ -116,5 +116,5 @@ if st.session_state['submited']:
     if btn_predict:
         data = {'Age':age,"Income":income,"Family":family,'Experience':experience,'Mortgage':house,'CCAvg':ccavg,'CreditCard':ccd,'CD Account':cda,'Securities Account':security,'Online':online,'Education':education}
         data = pd.DataFrame(data,index=[1])
-        right_panel.success(f"Customer with ID: {cust_id} have {predict(pd.DataFrame(data))[0].round(2)}% to accept the Personal Loan offer.")
+        right_panel.success(f"Customer with ID: {cust_id} have {predict(pd.DataFrame(data))[0]*100.round(2)}% to accept the Personal Loan offer.")
         right_panel.balloons()
