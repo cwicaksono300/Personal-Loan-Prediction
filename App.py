@@ -18,6 +18,8 @@ def cancel_button():
     st.session_state.submited = False
 def predict_button():
     st.session_state['predicted'] = True
+def reset_predict():
+    st.session_state['predicted'] = False
 
 #Function
 def load_model():
@@ -71,6 +73,9 @@ Financial institutions often face challenges in identifying the right customer s
 right_panel.header('Prediction')
 placeholder = right_panel.empty()
 input_container = placeholder.container()
+right_panel.divider()
+result_placeholder = right_panel.empty()
+btn_placeholder = right_panel.empty()
 
 cust_id = input_container.text_input('Customer ID :', label_visibility='collapsed',placeholder='Customer ID :')
 input_container.write("\n")
@@ -105,17 +110,16 @@ online = bool_map[online]
 data = {"Personal Information":["Customer ID",'Age',"Annual Income","Family Size",'Profesional Experience','Mortage House Value','Monthly Credit Card Spending ($ thousand)','Have Credit Card Account','Have Certificate Deposit Account','Have Security Account','Using Internet Banking'],"Value":[cust_id,age,income, family, experience,house, ccavg, ccd,cda,security,online]}
 
 #Submit Button
-input_container.divider()
-btn_submit = input_container.button('Submit',use_container_width=True, on_click=submit_button)
+btn_submit = btn_placeholder.button('Submit',use_container_width=True, on_click=submit_button)
 
 if st.session_state['submited']:
     placeholder.dataframe(data, use_container_width=True)
-    right_panel.divider()
-    btn_cancel = right_panel.button('Cancel',use_container_width=True,on_click=cancel_button)
-    btn_predict = right_panel.button('Predict',use_container_width=True)
-    #,on_click=predict_button,disabled=st.session_state.get("predicted", True)
+    btn_after =  btn_placeholder.container()
+    btn_predict = btn_after.button('Predict',use_container_width=True)
+    btn_cancel = btn_after.button('Cancel',use_container_width=True,on_click=cancel_button)
     if btn_predict:
         data = {'Age':age,"Income":income,"Family":family,'Experience':experience,'Mortgage':house,'CCAvg':ccavg,'CreditCard':ccd,'CD Account':cda,'Securities Account':security,'Online':online,'Education':education}
         data = pd.DataFrame(data,index=[1])
-        right_panel.success(f"Customer with ID: {cust_id} have {(predict(pd.DataFrame(data))[0].round(2))*100}% to accept the Personal Loan offer.")
+        result_placeholder.success(f"Customer with ID: {cust_id} have {predict(pd.DataFrame(data))[0].round(2)}% to accept the Personal Loan offer.")
         right_panel.balloons()
+        btn_predict_again = btn_placeholder.button('Predict Again',use_container_width=True,on_click=cancel_button)
